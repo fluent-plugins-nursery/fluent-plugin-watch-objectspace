@@ -58,7 +58,7 @@ If memory usage is over 1.3 times, it raise an exception.
 
 ## FAQ
 
-# What is the different between fluent-plugin-watch-objectspace and fluent-plugin-watch-process
+### What is the difference between fluent-plugin-watch-objectspace and fluent-plugin-watch-process?
 
 fluent-plugin-watch-process is useful cron/batch process monitoring, In contrast to it, fluent-plugin-watch-objectspace is
 focused on used plugin's resource (memory) usage especially object and memory.
