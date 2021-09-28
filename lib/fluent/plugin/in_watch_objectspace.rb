@@ -35,7 +35,7 @@ module Fluent
       desc "Collect GC::Profiler.raw_data"
       config_param :gc_raw_data, :bool, default: false
       desc "Threshold rate which regards increased RES as memory leaks"
-      config_param :res_incremental_threshold_rate, :float, default: 1.3
+      config_param :res_incremental_threshold_rate, :float, default: nil
      
       def configure(conf)
         super(conf)
