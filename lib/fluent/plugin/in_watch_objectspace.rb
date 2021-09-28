@@ -97,8 +97,10 @@ module Fluent
           if @gc_raw_data
             record["raw_data"] = GC::Profiler.raw_data
           end
-          @watch_class.each do |klass|
-            record["count"]["#{klass.downcase}"] = ObjectSpace.each_object(Object.const_get(klass)) { |x| x }
+          if @watch_class
+            @watch_class.each do |klass|
+              record["count"]["#{klass.downcase}"] = ObjectSpace.each_object(Object.const_get(klass)) { |x| x }
+            end
           end
 
           if @source.empty?
