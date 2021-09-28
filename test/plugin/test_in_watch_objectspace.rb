@@ -14,6 +14,17 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
     Fluent::Test::Driver::Input.new(Fluent::Plugin::WatchObjectspaceInput).configure(conf)
   end
 
+  def create_config(params)
+    config_element("ROOT", "", params)
+  end
+
+  def default_params(data)
+    {
+      "watch_delay" => 0,
+      "watch_interval" => 1
+    }.merge(data)
+  end
+
   sub_test_case "configure" do
     def test_default_configuration
       d = create_driver
