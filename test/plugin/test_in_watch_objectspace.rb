@@ -18,16 +18,6 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
     def test_default_configuration
       d = create_driver
       assert_equal([
-                     d.instance.watch_class,
-                     d.instance.watch_interval,
-                     d.instance.watch_delay,
-                     d.instance.tag,
-                     d.instance.modules,
-                     d.instance.gc_raw_data,
-                     d.instance.res_incremental_threshold_rate,
-                     d.instance.memsize_of_all_incremental_threshold_rate
-                   ],
-                   [
                      nil,
                      60,
                      60,
@@ -36,6 +26,16 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      false,
                      nil,
                      1.3
+                   ],
+                   [
+                     d.instance.watch_class,
+                     d.instance.watch_interval,
+                     d.instance.watch_delay,
+                     d.instance.tag,
+                     d.instance.modules,
+                     d.instance.gc_raw_data,
+                     d.instance.res_incremental_threshold_rate,
+                     d.instance.memsize_of_all_incremental_threshold_rate
                    ])
     end
 
@@ -52,16 +52,6 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                               })
       d = create_driver(config)
       assert_equal([
-                     d.instance.watch_class,
-                     d.instance.watch_interval,
-                     d.instance.watch_delay,
-                     d.instance.tag,
-                     d.instance.modules,
-                     d.instance.gc_raw_data,
-                     d.instance.res_incremental_threshold_rate,
-                     d.instance.memsize_of_all_incremental_threshold_rate
-                   ],
-                   [
                      ["String"],
                      2.0,
                      1.0,
@@ -70,6 +60,16 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      true,
                      1.1,
                      1.5
+                   ],
+                   [
+                     d.instance.watch_class,
+                     d.instance.watch_interval,
+                     d.instance.watch_delay,
+                     d.instance.tag,
+                     d.instance.modules,
+                     d.instance.gc_raw_data,
+                     d.instance.res_incremental_threshold_rate,
+                     d.instance.memsize_of_all_incremental_threshold_rate
                    ])
     end
   end
