@@ -52,7 +52,7 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
       assert_equal([1,
                     "watch_objectspace",
                     Fluent::EventTime,
-                    ["pid", "count", "memory_leaks", "memsize_of_all", "user", "pr", "ni", "virt", "res", "shr", "s", "%cpu", "%mem", "time+", "command"]
+                    ["pid", "count", "memory_leaks", "memsize_of_all", "virt", "res", "shr", "%cpu", "%mem", "time+"]
                    ],
                    [d.events.size,
                     event[0],

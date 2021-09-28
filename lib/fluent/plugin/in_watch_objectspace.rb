@@ -39,6 +39,8 @@ module Fluent
       config_param :res_incremental_threshold_rate, :float, default: nil
       desc "Threshold rate which regards increased memsize as memory leaks"
       config_param :memsize_of_all_incremental_threshold_rate, :float, default: 1.3
+      desc "Specify included fields of top command"
+      config_param :top_fields, :array, default: ["VIRT", "RES", "SHR", "%CPU", "%MEM", "TIME+"]
      
       def configure(conf)
         super(conf)
@@ -62,6 +64,7 @@ module Fluent
         fields = content.split("\n")[-2].split
         values = content.split("\n").last.split
         fields.each_with_index do |field, index|
+          next unless @top_fields.include?(field)
           case field
           when "USER", "S", "TIME+", "COMMAND"
             record[field.downcase] = values[index]
