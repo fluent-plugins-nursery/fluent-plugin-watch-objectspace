@@ -38,6 +38,40 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      1.3
                    ])
     end
+
+    def test_customize
+      config = config_element("ROOT", "", {
+                                "watch_delay" => 1,
+                                "watch_interval" => 2,
+                                "watch_class" => ["String"],
+                                "tag" => "customized",
+                                "modules" => ["objspace"],
+                                "gc_raw_data" => true,
+                                "res_incremental_threshold_rate" => 1.1,
+                                "memsize_of_all_incremental_threshold_rate" => 1.5
+                              })
+      d = create_driver(config)
+      assert_equal([
+                     d.instance.watch_class,
+                     d.instance.watch_interval,
+                     d.instance.watch_delay,
+                     d.instance.tag,
+                     d.instance.modules,
+                     d.instance.gc_raw_data,
+                     d.instance.res_incremental_threshold_rate,
+                     d.instance.memsize_of_all_incremental_threshold_rate
+                   ],
+                   [
+                     ["String"],
+                     2.0,
+                     1.0,
+                     "customized",
+                     ["objspace"],
+                     true,
+                     1.1,
+                     1.5
+                   ])
+    end
   end
 
   sub_test_case "parser" do
