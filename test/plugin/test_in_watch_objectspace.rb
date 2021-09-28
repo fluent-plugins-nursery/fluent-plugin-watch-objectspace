@@ -83,6 +83,22 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      d.instance.memsize_of_all_incremental_threshold_rate
                    ])
     end
+
+    def test_watch_class
+      config = create_config(default_params({"watch_class" => ["String"]}))
+      d = create_driver(config)
+      d.run(expect_records: 1, timeout: 1)
+      assert_equal([
+                     1,
+                     ["string"],
+                     true
+                   ],
+                   [
+                     d.events.size,
+                     d.events.first.last["count"].keys,
+                     d.events.first.last["count"]["string"] > 0
+                   ])
+    end
   end
 
   sub_test_case "parser" do
