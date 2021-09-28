@@ -24,7 +24,8 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      d.instance.tag,
                      d.instance.modules,
                      d.instance.gc_raw_data,
-                     d.instance.res_incremental_threshold_rate
+                     d.instance.res_incremental_threshold_rate,
+                     d.instance.memsize_of_all_incremental_threshold_rate
                    ],
                    [
                      nil,
@@ -33,6 +34,7 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      "watch_objectspace",
                      nil,
                      false,
+                     nil,
                      1.3
                    ])
     end
@@ -50,7 +52,7 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
       assert_equal([1,
                     "watch_objectspace",
                     Fluent::EventTime,
-                    ["pid", "count", "memory_leaks", "user", "pr", "ni", "virt", "res", "shr", "s", "%cpu", "%mem", "time+", "command"]
+                    ["pid", "count", "memory_leaks", "memsize_of_all", "user", "pr", "ni", "virt", "res", "shr", "s", "%cpu", "%mem", "time+", "command"]
                    ],
                    [d.events.size,
                     event[0],

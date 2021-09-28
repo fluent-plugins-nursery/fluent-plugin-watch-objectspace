@@ -14,6 +14,7 @@
 # limitations under the License.
 
 require "fluent/plugin/input"
+require "objspace"
 
 module Fluent
   module Plugin
@@ -36,6 +37,8 @@ module Fluent
       config_param :gc_raw_data, :bool, default: false
       desc "Threshold rate which regards increased RES as memory leaks"
       config_param :res_incremental_threshold_rate, :float, default: nil
+      desc "Threshold rate which regards increased memsize as memory leaks"
+      config_param :memsize_of_all_incremental_threshold_rate, :float, default: 1.3
      
       def configure(conf)
         super(conf)
@@ -78,7 +81,8 @@ module Fluent
         record = {
           "pid" => pid,
           "count" => {},
-          "memory_leaks" => false
+          "memory_leaks" => false,
+          "memsize_of_all" => ObjectSpace.memsize_of_all
         }
 
         begin
@@ -95,14 +99,24 @@ module Fluent
           end
 
           if @source.empty?
+            record["memsize_of_all"] = ObjectSpace.memsize_of_all
             @source = record
           end
 
-          if @source["res"] * @res_incremental_threshold_rate < record["res"]
+          if @res_incremental_threshold_rate
+            if @source["res"] * @res_incremental_threshold_rate < record["res"]
+              record["memory_leaks"] = true
+              message = sprintf("Memory leak is detected, threshold rate <%f>: %f > %f * %f",
+                                @res_incremental_threshold_rate, record["res"],
+                                @source["res"], @res_incremental_threshold_rate)
+              raise message
+            end
+          end
+          if @source["memsize_of_all"] * @memsize_of_all_incremental_threshold_rate < record["memsize_of_all"]
             record["memory_leaks"] = true
             message = sprintf("Memory leak is detected, threshold rate <%f>: %f > %f * %f",
-                              @res_incremental_threshold_rate, record["res"],
-                              @source["res"], @res_incremental_threshold_rate)
+                              @memsize_of_all_incremental_threshold_rate, record["memsize_of_all"],
+                              @source["memsize_of_all"], @memsize_of_all_incremental_threshold_rate)
             raise message
           end
           es = OneEventStream.new(Fluent::EventTime.now, record)
