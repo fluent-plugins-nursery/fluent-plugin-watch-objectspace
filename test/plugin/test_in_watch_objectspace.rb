@@ -18,7 +18,7 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
     config_element("ROOT", "", params)
   end
 
-  def default_params(data)
+  def default_params(data={})
     {
       "watch_delay" => 0,
       "watch_interval" => 1
