@@ -14,6 +14,7 @@
 # limitations under the License.
 
 require "fluent/plugin/input"
+require "fluent/config/error"
 require "objspace"
 
 module Fluent
@@ -46,7 +47,11 @@ module Fluent
         super(conf)
         if @modules
           @modules.each do |mod|
-            require mod
+            begin
+              require mod
+            rescue LoadError
+              raise Fluent::ConfigError.new("BUG: module <#{mod}> can't be loaded")
+            end
           end
         end
         @warmup_time = Time.now + @watch_delay
