@@ -136,6 +136,25 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
         assert_equal([tag], d.events.collect { |event| event.first })
       end
     end
+
+    sub_test_case "modules" do
+      def test_invalid_module
+        config = create_config(default_params({"modules" => "404",
+                                               "watch_class" => "404"}))
+        assert_raise do
+          create_driver(config)
+        end
+      end
+
+      def test_valid_module
+        config = create_config(default_params({"modules" => "fluent/plugin/in_watch_objectspace",
+                                               "watch_class" => "Fluent::Plugin::WatchObjectspaceInput"}))
+        d = create_driver(config)
+        d.run(expect_records: 1, timeout: 1)
+        assert_equal([{"fluent::plugin::watchobjectspaceinput" => 2}],
+                     d.events.collect { |event| event.last["count"] })
+      end
+    end
   end
 
   sub_test_case "parser" do
