@@ -14,7 +14,7 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
     Fluent::Test::Driver::Input.new(Fluent::Plugin::WatchObjectspaceInput).configure(conf)
   end
 
-  def create_config(params)
+  def create_config(params={})
     config_element("ROOT", "", params)
   end
 
