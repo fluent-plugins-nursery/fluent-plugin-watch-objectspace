@@ -100,7 +100,7 @@ module Fluent
           record.merge!(parse_top_result(content))
 
           if @gc_raw_data
-            record["raw_data"] = GC::Profiler.raw_data
+            record["gc_raw_data"] = GC::Profiler.raw_data
           end
           if @watch_class
             @watch_class.each do |klass|
