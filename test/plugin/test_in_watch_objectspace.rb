@@ -106,6 +106,19 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
       d.run(expect_records: 1, timeout: 5)
       assert_equal(1, d.events.size)
     end
+
+    sub_test_case "watch_delay" do
+      data(
+        before_interval: [1, 0, 5],
+        after_interval: [0, 10, 5]
+      )
+      test "watch delay" do |(count, delay, interval)|
+        config = create_config(default_params({"watch_delay" => delay, "watch_interval" => interval}))
+        d = create_driver(config)
+        d.run(expect_records: 1, timeout: interval)
+        assert_equal(count, d.events.size)
+      end
+    end
   end
 
   sub_test_case "parser" do
