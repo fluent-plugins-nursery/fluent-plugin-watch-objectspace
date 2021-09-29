@@ -119,6 +119,23 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
         assert_equal(count, d.events.size)
       end
     end
+
+    sub_test_case "tag" do
+      data(
+        with_tag: ["changed", "changed"],
+        default: ["watch_objectspace", nil]
+      )
+      test "tag" do |(tag, specified)|
+        config = if specified
+                   create_config(default_params({"tag" => specified}))
+                 else
+                   create_config(default_params)
+                 end
+        d = create_driver(config)
+        d.run(expect_records: 1, timeout: 5)
+        assert_equal([tag], d.events.collect { |event| event.first })
+      end
+    end
   end
 
   sub_test_case "parser" do
