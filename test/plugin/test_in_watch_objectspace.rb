@@ -99,6 +99,13 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      d.events.first.last["count"]["string"] > 0
                    ])
     end
+
+    def test_watch_interval
+      config = create_config(default_params({"watch_interval" => 5}))
+      d = create_driver(config)
+      d.run(expect_records: 1, timeout: 5)
+      assert_equal(1, d.events.size)
+    end
   end
 
   sub_test_case "parser" do
