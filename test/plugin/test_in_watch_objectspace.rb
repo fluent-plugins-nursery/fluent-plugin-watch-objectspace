@@ -155,6 +155,38 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      d.events.collect { |event| event.last["count"] })
       end
     end
+
+    def gc_raw_data_keys(data)
+      if data.empty?
+        data
+      else
+        data.collect do |raw_data|
+          raw_data.keys
+        end
+      end
+    end
+
+    sub_test_case "gc_raw_data" do
+      data(
+        without_gc: [false, [[]]],
+        with_gc: [true, [[%i(GC_FLAGS GC_TIME GC_INVOKE_TIME HEAP_USE_SIZE HEAP_TOTAL_SIZE HEAP_TOTAL_OBJECTS GC_IS_MARKED)]]]
+      )
+      test "gc" do |(gc, keys)|
+        config = create_config(default_params({"gc_raw_data" => "true"}))
+        d = create_driver(config)
+        GC.start if gc
+        d.run(expect_records: 1, timeout: 1)
+        assert_equal([
+                       1,
+                       keys
+                     ],
+                     [
+                       d.events.size,
+                       d.events.collect { |event| gc_raw_data_keys(event.last["gc_raw_data"])},
+                     ])
+      end
+    end
+
   end
 
   sub_test_case "parser" do
