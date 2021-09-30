@@ -29,18 +29,27 @@ $ bundle
 ## Configuration
 
 
-| parameter                      | type              | description                                                | default             |
-|--------------------------------|-------------------|------------------------------------------------------------|---------------------|
-| watch_class                    | array (optional)  | Class to be watched                                        |                     |
-| watch_interval                 | time (optional)   | Interval to watch object space                             | `60`                |
-| tag                            | string (optional) | Tag for this input plugin                                  | `watch_objectspace` |
-| modules                        | array (optional)  | Modules which must be required                             |                     |
-| watch_delay                    | time (optional)   | Delayed seconds until process start up                     | `60`                |
-| gc_raw_data                    | bool (optional)   | Collect GC::Profiler.raw_data                              |                     |
-| res_incremental_threshold_rate | float (optional)  | Threshold rate which regards increased RES as memory leaks | `1.3`               |
+| parameter      | type              | description                            | default                                           |
+|----------------|-------------------|----------------------------------------|---------------------------------------------------|
+| watch_class    | array (optional)  | Class to be watched                    |                                                   |
+| watch_interval | time (optional)   | Interval to watch object space         | `60`                                              |
+| tag            | string (optional) | Tag for this input plugin              | `watch_objectspace`                               |
+| modules        | array (optional)  | Modules which must be required         |                                                   |
+| watch_delay    | time (optional)   | Delayed seconds until process start up | `60`                                              |
+| gc_raw_data    | bool (optional)   | Collect GC::Profiler.raw_data          |                                                   |
+| top_fields     | array (optional)  | Specify included fields of top command | `["VIRT", "RES", "SHR", "%CPU", "%MEM", "TIME+"]` |
+
+### \<threshold\> section (optional) (single)
+
+### Configuration
+
+|parameter|type|description|default|
+|---|---|---|---|
+|memsize_of_all|float (optional)|Threshold rate which regards increased memsize as memory leaks|`1.3`|
+|res_of_top|float (optional)|Threshold rate which regards increased RES as memory leaks||
+
 
 ## Usage
-
 
 ```
 <source>
@@ -50,7 +59,9 @@ $ bundle
   watch_class CMetrics::Counter, CMetrics::Gauge, CMetrics::Untyped
   watch_interval 60
   watch_delay 10
-  res_incremental_threshold_rate 1.3
+  <threshold>
+    memsize_of_all 1.3
+  </threshold>
 </source>
 ```
 
