@@ -36,13 +36,16 @@ module Fluent
       config_param :watch_delay, :time, default: 60
       desc "Collect GC::Profiler.raw_data"
       config_param :gc_raw_data, :bool, default: false
-      desc "Threshold rate which regards increased RES as memory leaks"
-      config_param :res_incremental_threshold_rate, :float, default: nil
-      desc "Threshold rate which regards increased memsize as memory leaks"
-      config_param :memsize_of_all_incremental_threshold_rate, :float, default: 1.3
       desc "Specify included fields of top command"
       config_param :top_fields, :array, default: ["VIRT", "RES", "SHR", "%CPU", "%MEM", "TIME+"]
-     
+
+      config_section :threshold, required: false, multi: false do
+        desc "Threshold rate which regards increased memsize as memory leaks"
+        config_param :memsize_of_all, :float, default: 1.3
+        desc "Threshold rate which regards increased RES as memory leaks"
+        config_param :res_of_top, :float, default: nil
+      end
+
       def configure(conf)
         super(conf)
         if @modules
@@ -113,26 +116,33 @@ module Fluent
             @source = record
           end
 
-          if @res_incremental_threshold_rate
-            if @source["res"] * @res_incremental_threshold_rate < record["res"]
-              record["memory_leaks"] = true
-              message = sprintf("Memory leak is detected, threshold rate <%f>: %f > %f * %f",
-                                @res_incremental_threshold_rate, record["res"],
-                                @source["res"], @res_incremental_threshold_rate)
-              raise message
-            end
-          end
-          if @source["memsize_of_all"] * @memsize_of_all_incremental_threshold_rate < record["memsize_of_all"]
-            record["memory_leaks"] = true
-            message = sprintf("Memory leak is detected, threshold rate <%f>: %f > %f * %f",
-                              @memsize_of_all_incremental_threshold_rate, record["memsize_of_all"],
-                              @source["memsize_of_all"], @memsize_of_all_incremental_threshold_rate)
-            raise message
-          end
+          check_threshold
           es = OneEventStream.new(Fluent::EventTime.now, record)
           router.emit_stream(@tag, es)
         rescue => e
           $log.error(e.message)
+        end
+      end
+
+      def check_threshold
+        return unless @threshold
+
+        if @threshold.res_of_top
+          if @source["res"] * @threshold.res_of_top < record["res"]
+            record["memory_leaks"] = true
+            message = sprintf("Memory leak is detected, threshold rate <%f>: %f > %f * %f",
+                              @threshold.res_of_top, record["res"],
+                              @source["res"], @threshold.res_of_top)
+            raise message
+          end
+        end
+        if @threshold.memsize_of_all
+          @source["memsize_of_all"] * @threshold.memsize_of_all < record["memsize_of_all"]
+          record["memory_leaks"] = true
+          message = sprintf("Memory leak is detected, threshold rate <%f>: %f > %f * %f",
+                            @threshold.memsize_of_all, record["memsize_of_all"],
+                            @source["memsize_of_all"], @threshold.memsize_of_all)
+          raise message
         end
       end
 
