@@ -116,7 +116,7 @@ module Fluent
             @source = record
           end
 
-          check_threshold
+          check_threshold(record)
           es = OneEventStream.new(Fluent::EventTime.now, record)
           router.emit_stream(@tag, es)
         rescue => e
@@ -124,7 +124,7 @@ module Fluent
         end
       end
 
-      def check_threshold
+      def check_threshold(record)
         return unless @threshold
 
         if @threshold.res_of_top
