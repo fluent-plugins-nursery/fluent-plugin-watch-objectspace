@@ -185,6 +185,25 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
       end
     end
 
+    sub_test_case "threshold" do
+      def test_memsize_of_all
+        config = config_element("ROOT", "", {
+                                  "watch_delay" => 0,
+                                  "watch_interval" => 2,
+                                }, [config_element("threshold", "", {})])
+        d = create_driver(config)
+        assert_equal(1.3, d.instance.threshold.memsize_of_all)
+      end
+
+      def test_res_of_top
+        config = config_element("ROOT", "", {
+                                  "watch_delay" => 0,
+                                  "watch_interval" => 2,
+                                }, [config_element("threshold", "", {"res_of_top" => 1.5})])
+        d = create_driver(config)
+        assert_equal(1.5, d.instance.threshold.res_of_top)
+      end
+    end
   end
 
   sub_test_case "parser" do
