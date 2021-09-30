@@ -172,6 +172,7 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
       test "gc" do |(gc, keys)|
         config = create_config(default_params({"gc_raw_data" => "true"}))
         d = create_driver(config)
+        GC::Profiler.clear
         GC.start if gc
         d.run(expect_records: 1, timeout: 1)
         assert_equal([
