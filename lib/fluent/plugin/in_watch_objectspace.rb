@@ -130,7 +130,7 @@ module Fluent
         if @threshold.res_of_top
           if @source["res"] * @threshold.res_of_top < record["res"]
             record["memory_leaks"] = true
-            message = sprintf("Memory leak is detected, threshold rate <%f>: %f > %f * %f",
+            message = sprintf("Memory leak is detected, threshold res_of_top rate <%f>: %f > %f * %f",
                               @threshold.res_of_top, record["res"],
                               @source["res"], @threshold.res_of_top)
             raise message
@@ -139,7 +139,7 @@ module Fluent
         if @threshold.memsize_of_all
           if @source["memsize_of_all"] * @threshold.memsize_of_all < record["memsize_of_all"]
             record["memory_leaks"] = true
-            message = sprintf("Memory leak is detected, threshold rate <%f>: %f > %f * %f",
+            message = sprintf("Memory leak is detected, threshold of memsize_of_all rate <%f>: %f > %f * %f",
                               @threshold.memsize_of_all, record["memsize_of_all"],
                               @source["memsize_of_all"], @threshold.memsize_of_all)
             raise message
