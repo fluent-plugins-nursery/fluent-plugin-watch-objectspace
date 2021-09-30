@@ -34,9 +34,7 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      60,
                      "watch_objectspace",
                      nil,
-                     false,
-                     nil,
-                     1.3
+                     false
                    ],
                    [
                      d.instance.watch_class,
@@ -44,9 +42,7 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      d.instance.watch_delay,
                      d.instance.tag,
                      d.instance.modules,
-                     d.instance.gc_raw_data,
-                     d.instance.res_incremental_threshold_rate,
-                     d.instance.memsize_of_all_incremental_threshold_rate
+                     d.instance.gc_raw_data
                    ])
     end
 
@@ -68,9 +64,7 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      1.0,
                      "customized",
                      ["objspace"],
-                     true,
-                     1.1,
-                     1.5
+                     true
                    ],
                    [
                      d.instance.watch_class,
@@ -79,8 +73,6 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      d.instance.tag,
                      d.instance.modules,
                      d.instance.gc_raw_data,
-                     d.instance.res_incremental_threshold_rate,
-                     d.instance.memsize_of_all_incremental_threshold_rate
                    ])
     end
 
@@ -151,8 +143,14 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                                                "watch_class" => "Fluent::Plugin::WatchObjectspaceInput"}))
         d = create_driver(config)
         d.run(expect_records: 1, timeout: 1)
-        assert_equal([{"fluent::plugin::watchobjectspaceinput" => 2}],
-                     d.events.collect { |event| event.last["count"] })
+        assert_equal([
+                       ["fluent::plugin::watchobjectspaceinput"],
+                       true
+                     ],
+                     [
+                       d.events.collect { |event| event.last["count"].keys }.flatten,
+                       d.events.all? { |event| event.last["count"]["fluent::plugin::watchobjectspaceinput"] > 0 }
+                     ])
       end
     end
 
