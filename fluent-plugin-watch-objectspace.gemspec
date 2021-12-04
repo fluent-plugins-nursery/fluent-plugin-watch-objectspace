@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name    = "fluent-plugin-watch-objectspace"
-  spec.version = "0.2.1"
+  spec.version = "0.2.2"
   spec.authors = ["Kentaro Hayashi"]
   spec.email   = ["kenhys@gmail.com"]
 
