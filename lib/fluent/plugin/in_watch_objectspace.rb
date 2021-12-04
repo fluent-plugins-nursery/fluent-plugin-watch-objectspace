@@ -57,6 +57,11 @@ module Fluent
             end
           end
         end
+        if File.readlines("/etc/os-release").any? { |line| line.include?("ID=alpine\n") }
+          # alpine's top doesn't support -p option because it uses Busybox
+          # ps -q is also not supported. No better way to support it by default.
+          raise RuntimeError, "BUG: alpine is not supported"
+        end
         @warmup_time = Time.now + @watch_delay
         @source = {}
         GC::Profiler.enable

@@ -205,6 +205,14 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
         assert_equal(1.5, d.instance.threshold.res_of_top)
       end
     end
+
+    def test_block_alpine
+      stub(File).readlines { ["ID=alpine\n"] }
+      config = create_config
+      assert_raise RuntimeError.new("BUG: alpine is not supported") do
+        d = create_driver(config)
+      end
+    end
   end
 
   sub_test_case "parser" do
