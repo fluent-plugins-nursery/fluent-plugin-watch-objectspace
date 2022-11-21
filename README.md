@@ -51,6 +51,8 @@ $ bundle
 
 ## Usage
 
+If you want to monitor specific object, specify required modules and watch_class explicitly.
+
 ```
 <source>
   @type watch_objectspace
@@ -65,6 +67,8 @@ $ bundle
 </source>
 ```
 
+In above example, you must install cmetrics gem beforehand.
+
 If memory usage is over 1.3 times, it raise an exception.
 
 ## FAQ
@@ -73,6 +77,11 @@ If memory usage is over 1.3 times, it raise an exception.
 
 fluent-plugin-watch-process is useful cron/batch process monitoring, In contrast to it, fluent-plugin-watch-objectspace is
 focused on used plugin's resource usage especially object and memory.
+
+### What is the difference between fluent-plugin-watch-objectspace and fluent-plugin-sigdump?
+
+fluent-plugin-watch-process is useful if you already know the suspicious memory leaking objects. In contrast to it, fluent-plugin-sigdump is
+focused on tracking backtrace and memory profile dumps.
 
 ### Why is alpine not supported?
 
