@@ -167,7 +167,7 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
     sub_test_case "gc_raw_data" do
       data(
         without_gc: [false, [[]]],
-        with_gc: [true, [[%i(GC_FLAGS GC_TIME GC_INVOKE_TIME HEAP_USE_SIZE HEAP_TOTAL_SIZE HEAP_TOTAL_OBJECTS GC_IS_MARKED)]]]
+        with_gc: [true, [[%i(GC_FLAGS GC_TIME GC_INVOKE_TIME HEAP_USE_SIZE HEAP_TOTAL_SIZE HEAP_TOTAL_OBJECTS MOVED_OBJECTS GC_IS_MARKED)]]]
       )
       test "gc" do |(gc, keys)|
         config = create_config(default_params({"gc_raw_data" => "true"}))
