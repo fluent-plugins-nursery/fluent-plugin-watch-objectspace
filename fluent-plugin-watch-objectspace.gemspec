@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = test_files
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 2.2.24"
+  spec.add_development_dependency "bundler", "~> 2.3.27"
   spec.add_development_dependency "rake", "~> 13.0.6"
   spec.add_development_dependency "test-unit", "~> 3.4.4"
   spec.add_development_dependency "test-unit-rr", "~> 1.0.5"
