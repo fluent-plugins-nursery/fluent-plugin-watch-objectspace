@@ -21,6 +21,9 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
+    - name: setup /etc/os-release
+      run: |
+        sudo apt-get install -y base-files
     - name: unit testing
       env:
         CI: true
