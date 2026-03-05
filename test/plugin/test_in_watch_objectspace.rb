@@ -6,6 +6,10 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
     Fluent::Test.setup
   end
 
+  teardown do
+    RR.reset
+  end
+
   DEFAULT_CONFIG = config_element("ROOT", "", {})
 
   private

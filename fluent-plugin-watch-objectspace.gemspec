@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", [">= 2.2.33"]
   spec.add_development_dependency "rake", "< 14"
-  spec.add_development_dependency "test-unit", "< 3.7"
-  spec.add_development_dependency "test-unit-rr", "< 1.1"
+  spec.add_development_dependency "test-unit"
+  spec.add_development_dependency "rr"
   spec.add_runtime_dependency "fluentd", [">= 0.14.10", "< 2"]
 end
