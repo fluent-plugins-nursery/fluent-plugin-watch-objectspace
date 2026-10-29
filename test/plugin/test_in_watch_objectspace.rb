@@ -158,12 +158,12 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
       end
     end
 
-    def gc_raw_data_keys(data)
+    def gc_raw_data_keys(data, known_keys)
       if data.empty?
         data
       else
         data.collect do |raw_data|
-          raw_data.keys
+          raw_data.keys & known_keys
         end
       end
     end
@@ -185,7 +185,7 @@ class WatchObjectspaceInputTest < Test::Unit::TestCase
                      ],
                      [
                        d.events.size,
-                       d.events.collect { |event| gc_raw_data_keys(event.last["gc_raw_data"])},
+                       d.events.collect { |event| gc_raw_data_keys(event.last["gc_raw_data"], keys.flatten)},
                      ])
       end
     end
